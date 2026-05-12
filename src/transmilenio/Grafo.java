@@ -6,15 +6,7 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Queue;
 
-/**
- * Clase principal del grafo de TransMilenio.
- * Contiene la estructura base + algoritmos:
- *   - Lista de adyacencia
- *   - BFS (recorrido por anchura)
- *   - DFS (recorrido por profundidad)
- *   - Prim (árbol de expansión mínima)
- *   - Floyd-Warshall (caminos mínimos entre todos los pares)
- */
+
 public class Grafo {
 
     private final List<Nodo>   nodos;
@@ -22,7 +14,6 @@ public class Grafo {
     private final double[][]   matrizAdyacencia;
     private final int          n;
 
-    // Constante para "sin conexión" en Floyd-Warshall
     public static final double INF = Double.MAX_VALUE / 2.0;
 
     public Grafo() {
@@ -33,10 +24,6 @@ public class Grafo {
         matrizAdyacencia = new double[n][n];
         inicializarAristas();
     }
-
-    // =========================================================
-    //  INICIALIZACIÓN (sin cambios respecto al original)
-    // =========================================================
 
     private void inicializarNodos() {
         nodos.add(new Nodo(0,  "UMB Bogotá",         4.6486, -74.0648));
@@ -93,18 +80,12 @@ public class Grafo {
         }
     }
 
-    // =========================================================
-    //  GETTERS (sin cambios)
-    // =========================================================
 
     public List<Nodo>   getNodos()            { return nodos; }
     public List<Arista> getAristas()          { return aristas; }
     public double[][]   getMatrizAdyacencia() { return matrizAdyacencia; }
     public int          getN()                { return n; }
 
-    // =========================================================
-    //  REPRESENTACIÓN TEXTUAL DE MATRIZ (sin cambios)
-    // =========================================================
 
     public String matrizAString() {
         StringBuilder sb = new StringBuilder();
@@ -133,13 +114,10 @@ public class Grafo {
         return sb.toString();
     }
 
-    // =========================================================
-    //  1. LISTA DE ADYACENCIA
-    // =========================================================
-    /**
-     * Construye y retorna la lista de adyacencia del grafo como texto.
+    /* Construye y retorna la lista de adyacencia del grafo como texto.
      * Para cada nodo lista sus vecinos directos con el peso de la arista.
      */
+    
     public String listaAdyacenciaAString() {
         StringBuilder sb = new StringBuilder();
         sb.append("LISTA DE ADYACENCIA – Grafo TransMilenio\n");
@@ -164,16 +142,7 @@ public class Grafo {
         return sb.toString();
     }
 
-    // =========================================================
-    //  2. BFS – RECORRIDO POR ANCHURA
-    // =========================================================
-    /**
-     * Recorre el grafo en anchura (BFS) desde el nodo idInicio.
-     * Usa una cola (Queue) para procesar nodos nivel por nivel.
-     *
-     * @param idInicio id del nodo de inicio (0..n-1)
-     * @return texto con el recorrido BFS paso a paso
-     */
+    /* Recorre el grafo en anchura (BFS) desde el nodo idInicio.*/
     public String bfsAString(int idInicio) {
         boolean[] visitado = new boolean[n];
         List<Nodo> recorrido = new ArrayList<>();
@@ -205,16 +174,7 @@ public class Grafo {
         return sb.toString();
     }
 
-    // =========================================================
-    //  3. DFS – RECORRIDO POR PROFUNDIDAD
-    // =========================================================
-    /**
-     * Recorre el grafo en profundidad (DFS) desde el nodo idInicio.
-     * Implementación recursiva: visita un vecino, luego sus vecinos, etc.
-     *
-     * @param idInicio id del nodo de inicio (0..n-1)
-     * @return texto con el recorrido DFS paso a paso
-     */
+    /* Recorre el grafo en profundidad (DFS) desde el nodo idInicio.*/
     public String dfsAString(int idInicio) {
         boolean[] visitado = new boolean[n];
         List<Nodo> recorrido = new ArrayList<>();
@@ -231,8 +191,6 @@ public class Grafo {
         sb.append("\nTotal de nodos visitados: ").append(recorrido.size());
         return sb.toString();
     }
-
-    /** Auxiliar recursivo del DFS. */
     private void dfsRecursivo(int actual, boolean[] visitado, List<Nodo> recorrido) {
         visitado[actual] = true;
         recorrido.add(nodos.get(actual));
@@ -244,21 +202,7 @@ public class Grafo {
         }
     }
 
-    // =========================================================
-    //  4. ALGORITMO DE PRIM – ÁRBOL DE EXPANSIÓN MÍNIMA (MST)
-    // =========================================================
-    /**
-     * Calcula el MST usando el algoritmo de Prim (versión con arreglos).
-     *
-     * Variables clave:
-     *   - clave[v]  = peso mínimo de arista para añadir v al MST.
-     *   - padre[v]  = nodo desde el que v fue añadido al MST.
-     *   - enMST[v]  = true si v ya está en el MST.
-     *
-     * Ciclo principal: n-1 iteraciones, una por cada arista del MST.
-     *
-     * @return texto con las aristas seleccionadas y el peso total del MST
-     */
+    /* Calcula el MST usando el algoritmo de Prim.*/
     public String primAString() {
         double[]  clave  = new double[n];
         int[]     padre  = new int[n];
@@ -319,22 +263,7 @@ public class Grafo {
         return sb.toString();
     }
 
-    // =========================================================
-    //  5. FLOYD-WARSHALL
-    // =========================================================
-    /**
-     * Calcula las distancias mínimas entre todos los pares de nodos.
-     *
-     * Inicialización:
-     *   dist[i][j] = peso de arista si hay conexión directa.
-     *   dist[i][j] = INF si no hay conexión y i != j.
-     *   dist[i][i] = 0.
-     *
-     * Triple ciclo: para cada nodo intermedio k, para cada par (i,j),
-     *   si pasar por k mejora la distancia, se actualiza.
-     *
-     * @return texto con la matriz de distancias mínimas y ejemplos
-     */
+    /* Calcula las distancias mínimas entre todos los pares de nodos.*/
     public String floydWarshallAString() {
         // Inicializar dist[][]
         double[][] dist = new double[n][n];

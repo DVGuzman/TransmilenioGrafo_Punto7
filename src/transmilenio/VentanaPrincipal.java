@@ -30,7 +30,6 @@ public class VentanaPrincipal extends JFrame {
 
         tabs.addTab("  Grafo Visual  ",          new PanelGrafo(grafo));
         tabs.addTab("  Matriz de Adyacencias  ",  new PanelMatriz(grafo));
-        // Pestaña nueva con los algoritmos del punto 7
         tabs.addTab("  Prim y Floyd Warshall  ",   new PanelAlgoritmos(grafo));
 
         JLabel estado = new JLabel(

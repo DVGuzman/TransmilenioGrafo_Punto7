@@ -5,21 +5,8 @@ import java.awt.event.*;
 import java.util.List;
 import javax.swing.*;
 
-/**
- * Panel que expone los algoritmos del punto 7:
- *   - Lista de adyacencia
- *   - BFS  (recorrido por anchura)
- *   - DFS  (recorrido por profundidad)
- *   - Prim (árbol de expansión mínima)
- *   - Floyd-Warshall (caminos mínimos)
- *
- * El diseño visual (colores, fuentes, estilos) sigue exactamente
- * la paleta del proyecto original (TM rojo / gris oscuro).
- * NO se modifica ningún panel ni clase existente.
- */
 public class PanelAlgoritmos extends JPanel {
 
-    // ── Paleta igual que PanelMatriz ─────────────────────────
     private static final Color TM_ROJO        = new Color(220,  30,  30);
     private static final Color TM_ROJO_OSCURO = new Color(140,  10,  10);
     private static final Color TM_GRIS_OSCURO = new Color( 28,  28,  28);
@@ -41,7 +28,6 @@ public class PanelAlgoritmos extends JPanel {
 
     private void construirUI() {
 
-        // ── BANDA DE TÍTULO ───────────────────────────────────
         JPanel bandaTitulo = new JPanel(new BorderLayout());
         bandaTitulo.setBackground(TM_ROJO);
         bandaTitulo.setBorder(BorderFactory.createEmptyBorder(8, 12, 8, 12));
@@ -59,12 +45,10 @@ public class PanelAlgoritmos extends JPanel {
         bandaTitulo.add(titulo, BorderLayout.CENTER);
         bandaTitulo.add(sub,    BorderLayout.SOUTH);
 
-        // ── PANEL DE BOTONES ──────────────────────────────────
         JPanel panelBotones = new JPanel(new FlowLayout(FlowLayout.CENTER, 10, 8));
         panelBotones.setBackground(new Color(20, 20, 20));
         panelBotones.setBorder(BorderFactory.createMatteBorder(0, 0, 1, 0, TM_ROJO_OSCURO));
 
-        // Selector de nodo inicial (para BFS y DFS)
         JLabel lblNodo = new JLabel("Nodo inicio (BFS/DFS):");
         lblNodo.setForeground(new Color(200, 160, 160));
         lblNodo.setFont(new Font("Segoe UI", Font.PLAIN, 11));
@@ -84,7 +68,6 @@ public class PanelAlgoritmos extends JPanel {
         panelBotones.add(comboNodoInicio);
         panelBotones.add(Box.createHorizontalStrut(20));
 
-        // Botones
         String[] etiquetas = {
             "Lista de Adyacencia", "BFS (Anchura)", "DFS (Profundidad)",
             "Prim (MST)", "Floyd-Warshall"
@@ -101,7 +84,6 @@ public class PanelAlgoritmos extends JPanel {
             panelBotones.add(btn);
         }
 
-        // ── ÁREA DE RESULTADO ─────────────────────────────────
         areaResultado = new JTextArea();
         areaResultado.setFont(new Font("Consolas", Font.PLAIN, 11));
         areaResultado.setBackground(new Color(18, 5, 5));
@@ -120,16 +102,13 @@ public class PanelAlgoritmos extends JPanel {
             new Color(220, 100, 100)));
         scroll.getViewport().setBackground(new Color(18, 5, 5));
 
-        // ── ENSAMBLAR ─────────────────────────────────────────
         add(bandaTitulo,  BorderLayout.NORTH);
         add(panelBotones, BorderLayout.CENTER);
         add(scroll,       BorderLayout.SOUTH);
 
-        // El área de resultado debe ocupar la mayor parte
         scroll.setPreferredSize(new Dimension(0, 480));
     }
 
-    /** Crea un botón con el estilo visual del proyecto. */
     private JButton crearBoton(String texto) {
         JButton btn = new JButton(texto);
         btn.setBackground(TM_ROJO_OSCURO);
@@ -141,7 +120,6 @@ public class PanelAlgoritmos extends JPanel {
             BorderFactory.createEmptyBorder(5, 10, 5, 10)));
         btn.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
 
-        // Efecto hover
         btn.addMouseListener(new MouseAdapter() {
             @Override public void mouseEntered(MouseEvent e) {
                 btn.setBackground(TM_ROJO);
@@ -179,6 +157,6 @@ public class PanelAlgoritmos extends JPanel {
         }
 
         areaResultado.setText(resultado);
-        areaResultado.setCaretPosition(0); // Scroll al inicio
+        areaResultado.setCaretPosition(0);
     }
 }

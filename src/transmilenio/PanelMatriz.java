@@ -83,7 +83,6 @@ public class PanelMatriz extends JPanel {
         tabla.setSelectionBackground(TM_ROJO);
         tabla.setSelectionForeground(Color.WHITE);
 
-        // Renderizador
         TableCellRenderer render = new DefaultTableCellRenderer() {
             @Override
             public Component getTableCellRendererComponent(JTable t, Object val,
@@ -118,14 +117,12 @@ public class PanelMatriz extends JPanel {
             }
         };
 
-        // Encabezado
         JTableHeader header = tabla.getTableHeader();
         header.setBackground(TM_ROJO_OSCURO);
         header.setForeground(Color.BLACK);
         header.setFont(new Font("Segoe UI", Font.BOLD, 10));
         header.setReorderingAllowed(false);
 
-        // Anchos
         TableColumnModel cols = tabla.getColumnModel();
         cols.getColumn(0).setPreferredWidth(190);
         
@@ -140,7 +137,6 @@ public class PanelMatriz extends JPanel {
         scroll.setBorder(BorderFactory.createLineBorder(TM_ROJO_OSCURO, 1));
         scroll.getVerticalScrollBar().setBackground(TM_GRIS_OSCURO);
 
-        //Área texto
         JTextArea textArea = new JTextArea(grafo.matrizAString());
         textArea.setFont(new Font("Consolas", Font.PLAIN, 10));
         textArea.setBackground(new Color(18, 5, 5));

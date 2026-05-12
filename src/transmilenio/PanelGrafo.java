@@ -35,8 +35,6 @@ public class PanelGrafo extends JPanel {
     private boolean arrastrando = false;
     private final double ZOOM_MIN = 0.5;
     private final double ZOOM_MAX = 2.5;
-    // Posiciones relativas de cada nodo (porcentaje del área útil del panel)
-    // Índice = ID del nodo
     private static final double[][] POS = {
         {0.42, 0.08},  // 0 UMB
         {0.14, 0.24},  // 1 Portal Norte
@@ -63,7 +61,6 @@ public PanelGrafo(Grafo grafo) {
 
     setPreferredSize(new Dimension(500, 300));
 
-    // ZOOM
     addMouseWheelListener((MouseWheelEvent e) -> {
         if (e.getPreciseWheelRotation() < 0) {
             zoom += 0.05;
@@ -83,7 +80,6 @@ public PanelGrafo(Grafo grafo) {
     });
 
 
-    // Movimiento en la ventana
     MouseAdapter mouse = new MouseAdapter() {
 
         @Override
@@ -150,7 +146,6 @@ protected void paintComponent(Graphics g) {
 
     Graphics2D g2 = (Graphics2D) g;
 
-    // Calidad gráfica
     g2.setRenderingHint(
             RenderingHints.KEY_ANTIALIASING,
             RenderingHints.VALUE_ANTIALIAS_ON);
@@ -166,15 +161,12 @@ protected void paintComponent(Graphics g) {
     calcularCoordenadas();
 
 
-    // ELEMENTOS FIJOS
-
     dibujarFondo(g2);
 
     dibujarTitulo(g2);
 
     dibujarLeyenda(g2);
 
-    // Indicador zoom
     g2.setFont(new Font("Segoe UI", Font.BOLD, 11));
 
     g2.setColor(Color.WHITE);
@@ -187,13 +179,11 @@ protected void paintComponent(Graphics g) {
 
     Graphics2D gMapa = (Graphics2D) g2.create();
 
-    // Área donde está la leyenda
     int leyendaX = getWidth() - 210;
     int leyendaY = getHeight() - 130;
     int leyendaW = 205;
     int leyendaH = 115;
 
-     // Área visible total del grafo
     Area areaVisible = new Area(
             new Rectangle(
                     0,
@@ -201,7 +191,6 @@ protected void paintComponent(Graphics g) {
                     getWidth(),
                     getHeight() - 55));
 
-    // Restar el área de la leyenda
     areaVisible.subtract(
             new Area(
                     new Rectangle(
@@ -210,23 +199,17 @@ protected void paintComponent(Graphics g) {
                             leyendaW,
                             leyendaH)));
 
-    // Aplicar clip
     gMapa.setClip(areaVisible);
-        // Aplicar movimiento
         gMapa.translate(offsetX, offsetY);
-
-        // Centro del zoom
         int centroX = getWidth() / 2;
         int centroY = getHeight() / 2;
 
         gMapa.translate(centroX, centroY);
 
-        // Aplicar zoom
         gMapa.scale(zoom, zoom);
 
         gMapa.translate(-centroX, -centroY);
 
-        // Dibujar grafo
         dibujarAristas(gMapa);
 
         dibujarNodos(gMapa);
@@ -271,17 +254,14 @@ protected void paintComponent(Graphics g) {
             Nodo o = arista.getOrigen();
             Nodo d = arista.getDestino();
 
-            // Sombra
             g2.setStroke(new BasicStroke(5f, BasicStroke.CAP_ROUND, BasicStroke.JOIN_ROUND));
             g2.setColor(new Color(0, 0, 0, 90));
             g2.drawLine(o.getX() + 2, o.getY() + 2, d.getX() + 2, d.getY() + 2);
 
-            // Línea roja
             g2.setStroke(new BasicStroke(1.5f, BasicStroke.CAP_ROUND, BasicStroke.JOIN_ROUND));
             g2.setColor(TM_ROJO_CLARO);
             g2.drawLine(o.getX(), o.getY(), d.getX(), d.getY());
 
-            // Etiqueta del peso
             int mx = (o.getX() + d.getX()) / 2;
             int my = (o.getY() + d.getY()) / 2;
             String peso = String.format("%.1f km", arista.getDistanciaKm());
@@ -307,27 +287,22 @@ protected void paintComponent(Graphics g) {
             int radio = esUMB ? RADIO_UMB : RADIO_NODO;
             Color color = colorDeNodo(nodo);
 
-            // Sombra
             g2.setColor(new Color(0, 0, 0, 110));
             g2.fillOval(x - radio + 3, y - radio + 3, radio * 2, radio * 2);
-
-            // Halo exterior
+            
             g2.setColor(new Color(color.getRed(), color.getGreen(), color.getBlue(), 50));
             g2.fillOval(x - radio - 5, y - radio - 5, (radio + 5) * 2, (radio + 5) * 2);
 
-            // Relleno oscuro interior
             int ri = color.getRed()   / 6;
             int gi = color.getGreen() / 6;
             int bi = color.getBlue()  / 6;
             g2.setColor(new Color(ri, gi, bi));
             g2.fillOval(x - radio, y - radio, radio * 2, radio * 2);
-
-            // Borde del color
+            
             g2.setStroke(new BasicStroke(2.8f));
             g2.setColor(color);
             g2.drawOval(x - radio, y - radio, radio * 2, radio * 2);
 
-            // Símbolo interior
             String sym = esUMB ? "U" : "●";
             g2.setFont(new Font("Segoe UI", Font.BOLD, esUMB ? 11 : 8));
             g2.setColor(color);
@@ -377,25 +352,21 @@ protected void paintComponent(Graphics g) {
 
         g2.setFont(new Font("Segoe UI", Font.PLAIN, 10));
 
-        // Rojo – Portales
         g2.setColor(TM_ROJO);
         g2.fillOval(lx, ly + 10, 12, 12);
         g2.setColor(TM_BLANCO);
         g2.drawString("Portales de TransMilenio", lx + 18, ly + 21);
 
-        // Verde – Estaciones
         g2.setColor(TM_VERDE);
         g2.fillOval(lx, ly + 28, 12, 12);
         g2.setColor(TM_BLANCO);
         g2.drawString("Estaciones", lx + 18, ly + 39);
 
-        // Amarillo – UMB
         g2.setColor(TM_AMARILLO);
         g2.fillOval(lx, ly + 46, 12, 12);
         g2.setColor(TM_BLANCO);
         g2.drawString("Universidad Manuela Beltrán", lx + 18, ly + 57);
 
-        // Arista
         g2.setColor(TM_ROJO_CLARO);
         g2.setStroke(new BasicStroke(2f));
         g2.drawLine(lx, ly + 70, lx + 12, ly + 70);
